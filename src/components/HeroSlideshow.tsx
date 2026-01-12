@@ -71,4 +71,4 @@ export default function HeroSlideshow() {
       </div>
     </section>
   );
-}
+};
