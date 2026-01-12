@@ -12,7 +12,7 @@ import LoginPage from './pages/LoginPage';
 import Register from './pages/RegisterPage';
 import MyOrders from './pages/MyOrders';
 // Component Imports
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (

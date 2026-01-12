@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { getCategories } from '@/services/api';
 import TopImg from '@/assets/images/Top.jpg'
 import BottomImg from '@/assets/images/bottom.jpg'
 import AccessImg from '@/assets/images/Acess.jpg'
