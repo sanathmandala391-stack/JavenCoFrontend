@@ -52,6 +52,9 @@ export default function MyOrders() {
     </main>
   );
 }*/
+
+
+/*
 import { useEffect, useState } from 'react';
 import { fetchMyOrders } from '@/services/api';
 import Navbar from '@/components/Navbar';
@@ -100,6 +103,84 @@ export default function MyOrders() {
                 );
               })}
             </div>
+          </div>
+        ))}
+      </div>
+    </main>
+  );
+}*/
+import { useEffect, useState } from 'react';
+import { fetchMyOrders, cancelMyOrder } from '@/services/api';
+import Navbar from '@/components/Navbar';
+
+const STEPS = ['Order Confirmed', 'Shipped', 'Delivered'];
+
+export default function MyOrders() {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadOrders = () => {
+    fetchMyOrders()
+      .then((res) => setOrders(res.data))
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => { loadOrders(); }, []);
+
+  const handleCancel = async (id: string) => {
+    if (window.confirm("Are you sure you want to cancel this order?")) {
+      try {
+        await cancelMyOrder(id);
+        loadOrders(); // Refresh list after cancellation
+      } catch (err) {
+        alert("Could not cancel order.");
+      }
+    }
+  };
+
+  if (loading) return <div className="text-center py-20">Loading...</div>;
+
+  return (
+    <main className="min-h-screen bg-gray-50">
+      <Navbar />
+      <div className="pt-32 pb-20 px-4 max-w-2xl mx-auto">
+        <h1 className="text-3xl font-bold mb-10 italic uppercase tracking-tighter">My Orders</h1>
+        
+        {orders.map((order: any) => (
+          <div key={order._id} className="bg-white p-6 border mb-6 shadow-sm">
+            <div className="flex justify-between mb-6 border-b pb-4">
+              <span className="text-xs font-mono text-gray-400 uppercase">ID: {order._id.slice(-8)}</span>
+              <span className="font-bold text-black">₹{order.totalAmount}</span>
+            </div>
+
+            {order.status === 'Cancelled' ? (
+              <div className="py-4 px-3 bg-red-50 border border-red-100">
+                <p className="text-red-600 text-[10px] font-bold uppercase tracking-widest">Order Cancelled</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {STEPS.map((step, index) => {
+                  const currentStatusIndex = STEPS.indexOf(order.status);
+                  const isCompleted = index <= currentStatusIndex;
+                  return (
+                    <div key={step} className="flex items-center gap-4">
+                      <div className={`h-3 w-3 rounded-full ${isCompleted ? 'bg-green-500' : 'bg-gray-200'}`} />
+                      <span className={`text-[10px] font-bold uppercase tracking-widest ${isCompleted ? 'text-black' : 'text-gray-300'}`}>{step}</span>
+                    </div>
+                  );
+                })}
+                
+                {/* Only show cancel button if status is 'Order Confirmed' */}
+                {order.status === 'Order Confirmed' && (
+                  <button 
+                    onClick={() => handleCancel(order._id)}
+                    className="mt-4 text-[9px] uppercase tracking-tighter text-red-500 border border-red-500 px-3 py-1 hover:bg-red-50 transition-colors"
+                  >
+                    Cancel Order
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>

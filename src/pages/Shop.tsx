@@ -44,7 +44,7 @@ export default function ShopPage() {
                     />
                   </div>
                   <h3 className="text-sm font-bold uppercase tracking-widest">{product.name}</h3>
-                  <p className="text-brand-charcoal">${product.price}</p>
+                  <p className="text-brand-charcoal">₹{product.price}</p>
                 </Link>
               </motion.div>
             ))}
