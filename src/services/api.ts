@@ -2,8 +2,8 @@ import axios from 'axios';
 
 
 const API = axios.create({
-  //baseURL: 'https://javenco.onrender.com/api',
-  baseURL:'http://localhost:5000/api',
+  baseURL: 'https://javenco.onrender.com/api',
+ 
 });
 
 // Attach JWT token to every request for Cart/Orders
